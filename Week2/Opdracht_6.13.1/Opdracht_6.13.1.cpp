@@ -11,9 +11,7 @@ public:
 	void print() const;
 };
 
-
-int main()
-{
+int main(){
 	Rechthoek r1{ 5, 3 };
 	r1.print();
 	Rechthoek r2{ 15, 5 };
@@ -25,7 +23,6 @@ Rechthoek::Rechthoek(int breedte, int hoogte) :
 }
 
 void Rechthoek::print() const {
-
 	//Teken bovenlijn
 	for (int i = 0; i < Rechthoek::breedte; i++)
 		std::cout << "X ";
