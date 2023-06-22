@@ -1,73 +1,67 @@
 #include <iostream>
-#include <string>
+
+class GrafischObject {
+public:
+    GrafischObject() {}
+};
 
 class Punt {
 public:
+    Punt(int x, int y) : x(x), y(y) {}
     int x;
     int y;
-
-    Punt(int xCoord, int yCoord) : x(xCoord), y(yCoord) {}
-};
-
-class GrafischObject {
-protected:
-    Punt middelpunt;
-    std::string kleur;
-
-public:
-    GrafischObject(const Punt& midden, const std::string& objectKleur)
-        : middelpunt(midden), kleur(objectKleur) {}
-
-    void print() const {
-        std::cout << "Grafisch object met middelpuntX = " << middelpunt.x
-            << ", middelpuntY = " << middelpunt.y
-            << " met de kleur " << kleur << "." << std::endl;
-    }
-
-    void zetMiddelpunt(const Punt& p) {
-        middelpunt = p;
-    }
 };
 
 class Rechthoek : public GrafischObject {
+public:
+    Rechthoek(const Punt& middelpunt, int lengte, int breedte)
+        : middelpunt(middelpunt), lengte(lengte), breedte(breedte) {}
+
+    Punt geefLinkerBovenhoek() const {
+        int x = middelpunt.x - lengte / 2;
+        int y = middelpunt.y + breedte / 2;
+        return Punt(x, y);
+    }
+
+    Punt geefLinkerOnderhoek() const {
+        int x = middelpunt.x - lengte / 2;
+        int y = middelpunt.y - breedte / 2;
+        return Punt(x, y);
+    }
+
+    Punt geefRechterBovenhoek() const {
+        int x = middelpunt.x + lengte / 2;
+        int y = middelpunt.y + breedte / 2;
+        return Punt(x, y);
+    }
+
+    Punt geefRechterOnderhoek() const {
+        int x = middelpunt.x + lengte / 2;
+        int y = middelpunt.y - breedte / 2;
+        return Punt(x, y);
+    }
+
 private:
+    Punt middelpunt;
     int lengte;
     int breedte;
-
-public:
-    Rechthoek(const Punt& midden, const std::string& objectKleur, int objectLengte, int objectBreedte)
-        : GrafischObject(midden, objectKleur), lengte(objectLengte), breedte(objectBreedte) {}
-
-    Punt geefLinkerBovenhoek() {
-        int linkerBovenX = middelpunt.x - (lengte / 2);
-        int linkerBovenY = middelpunt.y + (breedte / 2);
-        return Punt(linkerBovenX, linkerBovenY);
-    }
-
-    Punt geefLinkerOnderhoek() {
-        int linkerOnderX = middelpunt.x - (lengte / 2);
-        int linkerOnderY = middelpunt.y - (breedte / 2);
-        return Punt(linkerOnderX, linkerOnderY);
-    }
-
-    Punt geefRechterBovenhoek() {
-        int rechterBovenX = middelpunt.x + (lengte / 2);
-        int rechterBovenY = middelpunt.y + (breedte / 2);
-        return Punt(rechterBovenX, rechterBovenY);
-    }
-
-    Punt geefRechterOnderhoek() {
-        int rechterOnderX = middelpunt.x + (lengte / 2);
-        int rechterOnderY = middelpunt.y - (breedte / 2);
-        return Punt(rechterOnderX, rechterOnderY);
-    }
 };
 
 int main() {
-    Punt middelpunt(10, 20);
-    Rechthoek rechthoek(middelpunt, "blauw", 6, 4);
+    Punt middelpunt(0, 0);
+    Rechthoek rechthoek(middelpunt, 4, 2);
 
-    rechthoek.print();
+    Punt linkerBovenhoek = rechthoek.geefLinkerBovenhoek();
+    std::cout << "Linker bovenhoek: (" << linkerBovenhoek.x << ", " << linkerBovenhoek.y << ")" << std::endl;
 
-    std::cout << "Linker bovenhoek: (" << rechthoek.geefLinkerBovenhoek().x << ", " << rechthoek.geefLinkerBovenhoek().y << ")" << std::endl;
-    std::cout << "Linker onderhoek: (" << rechthoek.geefLinkerOnderhoek().x << ", " << rechthoek.geefLinkerOnderhoek().y << ")"
+    Punt linkerOnderhoek = rechthoek.geefLinkerOnderhoek();
+    std::cout << "Linker onderhoek: (" << linkerOnderhoek.x << ", " << linkerOnderhoek.y << ")" << std::endl;
+
+    Punt rechterBovenhoek = rechthoek.geefRechterBovenhoek();
+    std::cout << "Rechter bovenhoek: (" << rechterBovenhoek.x << ", " << rechterBovenhoek.y << ")" << std::endl;
+
+    Punt rechterOnderhoek = rechthoek.geefRechterOnderhoek();
+    std::cout << "Rechter onderhoek: (" << rechterOnderhoek.x << ", " << rechterOnderhoek.y << ")" << std::endl;
+
+    return 0;
+}
